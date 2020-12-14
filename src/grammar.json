@@ -2074,7 +2074,7 @@
             "name": "command_call"
           },
           "named": true,
-          "value": "method_call"
+          "value": "call"
         },
         {
           "type": "ALIAS",
@@ -2083,20 +2083,7 @@
             "name": "command_call_with_block"
           },
           "named": true,
-          "value": "method_call"
-        },
-        {
-          "type": "PREC_LEFT",
-          "value": 0,
-          "content": {
-            "type": "ALIAS",
-            "content": {
-              "type": "SYMBOL",
-              "name": "chained_command_call"
-            },
-            "named": true,
-            "value": "call"
-          }
+          "value": "call"
         },
         {
           "type": "ALIAS",
@@ -2519,34 +2506,137 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "FIELD",
-          "name": "method",
-          "content": {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "SYMBOL",
-                "name": "_variable"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "scope_resolution"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "call"
-              },
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "SYMBOL",
-                  "name": "chained_command_call"
-                },
-                "named": true,
-                "value": "call"
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "FIELD",
+              "name": "method",
+              "content": {
+                "type": "CHOICE",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "_variable"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "scope_resolution"
+                  }
+                ]
               }
-            ]
-          }
+            },
+            {
+              "type": "PREC_LEFT",
+              "value": 56,
+              "content": {
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "FIELD",
+                    "name": "receiver",
+                    "content": {
+                      "type": "SYMBOL",
+                      "name": "_primary"
+                    }
+                  },
+                  {
+                    "type": "CHOICE",
+                    "members": [
+                      {
+                        "type": "STRING",
+                        "value": "."
+                      },
+                      {
+                        "type": "STRING",
+                        "value": "&."
+                      }
+                    ]
+                  },
+                  {
+                    "type": "FIELD",
+                    "name": "method",
+                    "content": {
+                      "type": "CHOICE",
+                      "members": [
+                        {
+                          "type": "SYMBOL",
+                          "name": "identifier"
+                        },
+                        {
+                          "type": "SYMBOL",
+                          "name": "operator"
+                        },
+                        {
+                          "type": "SYMBOL",
+                          "name": "constant"
+                        },
+                        {
+                          "type": "SYMBOL",
+                          "name": "argument_list"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "FIELD",
+                  "name": "receiver",
+                  "content": {
+                    "type": "ALIAS",
+                    "content": {
+                      "type": "SYMBOL",
+                      "name": "command_call_with_block"
+                    },
+                    "named": true,
+                    "value": "call"
+                  }
+                },
+                {
+                  "type": "CHOICE",
+                  "members": [
+                    {
+                      "type": "STRING",
+                      "value": "."
+                    },
+                    {
+                      "type": "STRING",
+                      "value": "&."
+                    }
+                  ]
+                },
+                {
+                  "type": "FIELD",
+                  "name": "method",
+                  "content": {
+                    "type": "CHOICE",
+                    "members": [
+                      {
+                        "type": "SYMBOL",
+                        "name": "identifier"
+                      },
+                      {
+                        "type": "SYMBOL",
+                        "name": "operator"
+                      },
+                      {
+                        "type": "SYMBOL",
+                        "name": "constant"
+                      },
+                      {
+                        "type": "SYMBOL",
+                        "name": "argument_list"
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
         },
         {
           "type": "FIELD",
@@ -2570,25 +2660,81 @@
           "type": "SEQ",
           "members": [
             {
-              "type": "FIELD",
-              "name": "method",
-              "content": {
-                "type": "CHOICE",
-                "members": [
-                  {
-                    "type": "SYMBOL",
-                    "name": "_variable"
-                  },
-                  {
-                    "type": "SYMBOL",
-                    "name": "scope_resolution"
-                  },
-                  {
-                    "type": "SYMBOL",
-                    "name": "call"
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "FIELD",
+                  "name": "method",
+                  "content": {
+                    "type": "CHOICE",
+                    "members": [
+                      {
+                        "type": "SYMBOL",
+                        "name": "_variable"
+                      },
+                      {
+                        "type": "SYMBOL",
+                        "name": "scope_resolution"
+                      }
+                    ]
                   }
-                ]
-              }
+                },
+                {
+                  "type": "PREC_LEFT",
+                  "value": 56,
+                  "content": {
+                    "type": "SEQ",
+                    "members": [
+                      {
+                        "type": "FIELD",
+                        "name": "receiver",
+                        "content": {
+                          "type": "SYMBOL",
+                          "name": "_primary"
+                        }
+                      },
+                      {
+                        "type": "CHOICE",
+                        "members": [
+                          {
+                            "type": "STRING",
+                            "value": "."
+                          },
+                          {
+                            "type": "STRING",
+                            "value": "&."
+                          }
+                        ]
+                      },
+                      {
+                        "type": "FIELD",
+                        "name": "method",
+                        "content": {
+                          "type": "CHOICE",
+                          "members": [
+                            {
+                              "type": "SYMBOL",
+                              "name": "identifier"
+                            },
+                            {
+                              "type": "SYMBOL",
+                              "name": "operator"
+                            },
+                            {
+                              "type": "SYMBOL",
+                              "name": "constant"
+                            },
+                            {
+                              "type": "SYMBOL",
+                              "name": "argument_list"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
             },
             {
               "type": "PREC",
@@ -2626,25 +2772,81 @@
           "type": "SEQ",
           "members": [
             {
-              "type": "FIELD",
-              "name": "method",
-              "content": {
-                "type": "CHOICE",
-                "members": [
-                  {
-                    "type": "SYMBOL",
-                    "name": "_variable"
-                  },
-                  {
-                    "type": "SYMBOL",
-                    "name": "scope_resolution"
-                  },
-                  {
-                    "type": "SYMBOL",
-                    "name": "call"
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "FIELD",
+                  "name": "method",
+                  "content": {
+                    "type": "CHOICE",
+                    "members": [
+                      {
+                        "type": "SYMBOL",
+                        "name": "_variable"
+                      },
+                      {
+                        "type": "SYMBOL",
+                        "name": "scope_resolution"
+                      }
+                    ]
                   }
-                ]
-              }
+                },
+                {
+                  "type": "PREC_LEFT",
+                  "value": 56,
+                  "content": {
+                    "type": "SEQ",
+                    "members": [
+                      {
+                        "type": "FIELD",
+                        "name": "receiver",
+                        "content": {
+                          "type": "SYMBOL",
+                          "name": "_primary"
+                        }
+                      },
+                      {
+                        "type": "CHOICE",
+                        "members": [
+                          {
+                            "type": "STRING",
+                            "value": "."
+                          },
+                          {
+                            "type": "STRING",
+                            "value": "&."
+                          }
+                        ]
+                      },
+                      {
+                        "type": "FIELD",
+                        "name": "method",
+                        "content": {
+                          "type": "CHOICE",
+                          "members": [
+                            {
+                              "type": "SYMBOL",
+                              "name": "identifier"
+                            },
+                            {
+                              "type": "SYMBOL",
+                              "name": "operator"
+                            },
+                            {
+                              "type": "SYMBOL",
+                              "name": "constant"
+                            },
+                            {
+                              "type": "SYMBOL",
+                              "name": "argument_list"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
             },
             {
               "type": "PREC",
@@ -2680,62 +2882,6 @@
         }
       ]
     },
-    "chained_command_call": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "FIELD",
-          "name": "receiver",
-          "content": {
-            "type": "ALIAS",
-            "content": {
-              "type": "SYMBOL",
-              "name": "command_call_with_block"
-            },
-            "named": true,
-            "value": "method_call"
-          }
-        },
-        {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "STRING",
-              "value": "."
-            },
-            {
-              "type": "STRING",
-              "value": "&."
-            }
-          ]
-        },
-        {
-          "type": "FIELD",
-          "name": "method",
-          "content": {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "SYMBOL",
-                "name": "identifier"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "operator"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "constant"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "argument_list"
-              }
-            ]
-          }
-        }
-      ]
-    },
     "method_call": {
       "type": "CHOICE",
       "members": [
@@ -2743,25 +2889,81 @@
           "type": "SEQ",
           "members": [
             {
-              "type": "FIELD",
-              "name": "method",
-              "content": {
-                "type": "CHOICE",
-                "members": [
-                  {
-                    "type": "SYMBOL",
-                    "name": "_variable"
-                  },
-                  {
-                    "type": "SYMBOL",
-                    "name": "scope_resolution"
-                  },
-                  {
-                    "type": "SYMBOL",
-                    "name": "call"
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "FIELD",
+                  "name": "method",
+                  "content": {
+                    "type": "CHOICE",
+                    "members": [
+                      {
+                        "type": "SYMBOL",
+                        "name": "_variable"
+                      },
+                      {
+                        "type": "SYMBOL",
+                        "name": "scope_resolution"
+                      }
+                    ]
                   }
-                ]
-              }
+                },
+                {
+                  "type": "PREC_LEFT",
+                  "value": 56,
+                  "content": {
+                    "type": "SEQ",
+                    "members": [
+                      {
+                        "type": "FIELD",
+                        "name": "receiver",
+                        "content": {
+                          "type": "SYMBOL",
+                          "name": "_primary"
+                        }
+                      },
+                      {
+                        "type": "CHOICE",
+                        "members": [
+                          {
+                            "type": "STRING",
+                            "value": "."
+                          },
+                          {
+                            "type": "STRING",
+                            "value": "&."
+                          }
+                        ]
+                      },
+                      {
+                        "type": "FIELD",
+                        "name": "method",
+                        "content": {
+                          "type": "CHOICE",
+                          "members": [
+                            {
+                              "type": "SYMBOL",
+                              "name": "identifier"
+                            },
+                            {
+                              "type": "SYMBOL",
+                              "name": "operator"
+                            },
+                            {
+                              "type": "SYMBOL",
+                              "name": "constant"
+                            },
+                            {
+                              "type": "SYMBOL",
+                              "name": "argument_list"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
             },
             {
               "type": "FIELD",
@@ -2777,25 +2979,81 @@
           "type": "SEQ",
           "members": [
             {
-              "type": "FIELD",
-              "name": "method",
-              "content": {
-                "type": "CHOICE",
-                "members": [
-                  {
-                    "type": "SYMBOL",
-                    "name": "_variable"
-                  },
-                  {
-                    "type": "SYMBOL",
-                    "name": "scope_resolution"
-                  },
-                  {
-                    "type": "SYMBOL",
-                    "name": "call"
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "FIELD",
+                  "name": "method",
+                  "content": {
+                    "type": "CHOICE",
+                    "members": [
+                      {
+                        "type": "SYMBOL",
+                        "name": "_variable"
+                      },
+                      {
+                        "type": "SYMBOL",
+                        "name": "scope_resolution"
+                      }
+                    ]
                   }
-                ]
-              }
+                },
+                {
+                  "type": "PREC_LEFT",
+                  "value": 56,
+                  "content": {
+                    "type": "SEQ",
+                    "members": [
+                      {
+                        "type": "FIELD",
+                        "name": "receiver",
+                        "content": {
+                          "type": "SYMBOL",
+                          "name": "_primary"
+                        }
+                      },
+                      {
+                        "type": "CHOICE",
+                        "members": [
+                          {
+                            "type": "STRING",
+                            "value": "."
+                          },
+                          {
+                            "type": "STRING",
+                            "value": "&."
+                          }
+                        ]
+                      },
+                      {
+                        "type": "FIELD",
+                        "name": "method",
+                        "content": {
+                          "type": "CHOICE",
+                          "members": [
+                            {
+                              "type": "SYMBOL",
+                              "name": "identifier"
+                            },
+                            {
+                              "type": "SYMBOL",
+                              "name": "operator"
+                            },
+                            {
+                              "type": "SYMBOL",
+                              "name": "constant"
+                            },
+                            {
+                              "type": "SYMBOL",
+                              "name": "argument_list"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
             },
             {
               "type": "PREC",
@@ -2828,25 +3086,81 @@
           "type": "SEQ",
           "members": [
             {
-              "type": "FIELD",
-              "name": "method",
-              "content": {
-                "type": "CHOICE",
-                "members": [
-                  {
-                    "type": "SYMBOL",
-                    "name": "_variable"
-                  },
-                  {
-                    "type": "SYMBOL",
-                    "name": "scope_resolution"
-                  },
-                  {
-                    "type": "SYMBOL",
-                    "name": "call"
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "FIELD",
+                  "name": "method",
+                  "content": {
+                    "type": "CHOICE",
+                    "members": [
+                      {
+                        "type": "SYMBOL",
+                        "name": "_variable"
+                      },
+                      {
+                        "type": "SYMBOL",
+                        "name": "scope_resolution"
+                      }
+                    ]
                   }
-                ]
-              }
+                },
+                {
+                  "type": "PREC_LEFT",
+                  "value": 56,
+                  "content": {
+                    "type": "SEQ",
+                    "members": [
+                      {
+                        "type": "FIELD",
+                        "name": "receiver",
+                        "content": {
+                          "type": "SYMBOL",
+                          "name": "_primary"
+                        }
+                      },
+                      {
+                        "type": "CHOICE",
+                        "members": [
+                          {
+                            "type": "STRING",
+                            "value": "."
+                          },
+                          {
+                            "type": "STRING",
+                            "value": "&."
+                          }
+                        ]
+                      },
+                      {
+                        "type": "FIELD",
+                        "name": "method",
+                        "content": {
+                          "type": "CHOICE",
+                          "members": [
+                            {
+                              "type": "SYMBOL",
+                              "name": "identifier"
+                            },
+                            {
+                              "type": "SYMBOL",
+                              "name": "operator"
+                            },
+                            {
+                              "type": "SYMBOL",
+                              "name": "constant"
+                            },
+                            {
+                              "type": "SYMBOL",
+                              "name": "argument_list"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
             },
             {
               "type": "PREC",
@@ -2882,25 +3196,81 @@
             "type": "SEQ",
             "members": [
               {
-                "type": "FIELD",
-                "name": "method",
-                "content": {
-                  "type": "CHOICE",
-                  "members": [
-                    {
-                      "type": "SYMBOL",
-                      "name": "_variable"
-                    },
-                    {
-                      "type": "SYMBOL",
-                      "name": "scope_resolution"
-                    },
-                    {
-                      "type": "SYMBOL",
-                      "name": "call"
+                "type": "CHOICE",
+                "members": [
+                  {
+                    "type": "FIELD",
+                    "name": "method",
+                    "content": {
+                      "type": "CHOICE",
+                      "members": [
+                        {
+                          "type": "SYMBOL",
+                          "name": "_variable"
+                        },
+                        {
+                          "type": "SYMBOL",
+                          "name": "scope_resolution"
+                        }
+                      ]
                     }
-                  ]
-                }
+                  },
+                  {
+                    "type": "PREC_LEFT",
+                    "value": 56,
+                    "content": {
+                      "type": "SEQ",
+                      "members": [
+                        {
+                          "type": "FIELD",
+                          "name": "receiver",
+                          "content": {
+                            "type": "SYMBOL",
+                            "name": "_primary"
+                          }
+                        },
+                        {
+                          "type": "CHOICE",
+                          "members": [
+                            {
+                              "type": "STRING",
+                              "value": "."
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "&."
+                            }
+                          ]
+                        },
+                        {
+                          "type": "FIELD",
+                          "name": "method",
+                          "content": {
+                            "type": "CHOICE",
+                            "members": [
+                              {
+                                "type": "SYMBOL",
+                                "name": "identifier"
+                              },
+                              {
+                                "type": "SYMBOL",
+                                "name": "operator"
+                              },
+                              {
+                                "type": "SYMBOL",
+                                "name": "constant"
+                              },
+                              {
+                                "type": "SYMBOL",
+                                "name": "argument_list"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ]
               },
               {
                 "type": "FIELD",
@@ -2920,25 +3290,81 @@
             "type": "SEQ",
             "members": [
               {
-                "type": "FIELD",
-                "name": "method",
-                "content": {
-                  "type": "CHOICE",
-                  "members": [
-                    {
-                      "type": "SYMBOL",
-                      "name": "_variable"
-                    },
-                    {
-                      "type": "SYMBOL",
-                      "name": "scope_resolution"
-                    },
-                    {
-                      "type": "SYMBOL",
-                      "name": "call"
+                "type": "CHOICE",
+                "members": [
+                  {
+                    "type": "FIELD",
+                    "name": "method",
+                    "content": {
+                      "type": "CHOICE",
+                      "members": [
+                        {
+                          "type": "SYMBOL",
+                          "name": "_variable"
+                        },
+                        {
+                          "type": "SYMBOL",
+                          "name": "scope_resolution"
+                        }
+                      ]
                     }
-                  ]
-                }
+                  },
+                  {
+                    "type": "PREC_LEFT",
+                    "value": 56,
+                    "content": {
+                      "type": "SEQ",
+                      "members": [
+                        {
+                          "type": "FIELD",
+                          "name": "receiver",
+                          "content": {
+                            "type": "SYMBOL",
+                            "name": "_primary"
+                          }
+                        },
+                        {
+                          "type": "CHOICE",
+                          "members": [
+                            {
+                              "type": "STRING",
+                              "value": "."
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "&."
+                            }
+                          ]
+                        },
+                        {
+                          "type": "FIELD",
+                          "name": "method",
+                          "content": {
+                            "type": "CHOICE",
+                            "members": [
+                              {
+                                "type": "SYMBOL",
+                                "name": "identifier"
+                              },
+                              {
+                                "type": "SYMBOL",
+                                "name": "operator"
+                              },
+                              {
+                                "type": "SYMBOL",
+                                "name": "constant"
+                              },
+                              {
+                                "type": "SYMBOL",
+                                "name": "argument_list"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ]
               },
               {
                 "type": "FIELD",
@@ -4709,8 +5135,13 @@
             "name": "call"
           },
           {
-            "type": "SYMBOL",
-            "name": "method_call"
+            "type": "ALIAS",
+            "content": {
+              "type": "SYMBOL",
+              "name": "method_call"
+            },
+            "named": true,
+            "value": "call"
           }
         ]
       }
